@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{{ form.media }}
+
+
+<div class="container">
+  <div id="calendar">
+    <!-- Calendar is injected here -->
+  </div>
+  <div class="row" style="margin-top: 50px;">
+    <div class="col-md-5">
+      <ul class="list-group">
+        <li class="list-group-item">Username: {{ user.username }}</li>
+        <li class="list-group-item">Email: {{ user.email }}</li>
+        <li class="list-group-item">First Name: {{ user.first_name }}</li>
+        <li class="list-group-item">Last Name: {{ user.last_name }}</li>
+        <li class="list-group-item">User ID: {{ user.pk }}</li>
+        <li class="list-group-item">Date Joined: {{ user.date_joined }}</li>
+        <li class="list-group-item">Is Authenticated?: {{ user.is_authenticated }}</li>
+        <li class="list-group-item">PTO Tier: {{ user.profile.pto_tier }}</li>
+      </ul>
+    </div>
+    <!-- Pto Request Form -->
+    <div class="col-md-7">
+      <form class="post-form" method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input class="btn btn-success" type="submit" value="Submit" />
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- SCRIPTS -->
+<script>
+
+$(document).ready(function() {
+  // Prevent the objs from being turned into unicode by using the 'safe' filter.
+  var ptoObjs = {{ ptoHistory | safe }};
+  console.log(ptoObjs);
+
+  // Initialize an instance of fullcalendar, targeting the div to which you want it to belong.
+  $('#calendar').fullCalendar({
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    },
+    defaultView:'month',
+    editable: true,
+    eventDrop: function(event, delta, revertFunc, jsEvent, ui, view){
+      // Eventually implement a system where the user can edit events by dragging.
+    },
+    events: ptoObjs,
+    
+  });
+  // Remove vertical scrollbar that Full Calendar adds inline. For some reason it comes back when switching between month, week and day views.
+  $('.fc-scroller').css('overflow-y', '');
+
+});
+
+</script>
+
+
+
+
+
+
+<!-- console.log("format: ", event.start.format());
+console.log("date: ", event.start.date());
+console.log("seconds", event.start.seconds());
+console.log("minutes", event.start.minutes());
+console.log("hours", event.start.hours());
+console.log("");
+console.log("days", event.start.days());
+console.log("month", event.start.month());
+console.log("year", event.start.year());
+console.log("");
+console.log(event.start); -->
+
+
+{% endblock content%}
