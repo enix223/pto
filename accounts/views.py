@@ -13,7 +13,7 @@ from accounts.models import PtoHistory
 class IndexView(FormView):
     template_name = 'accounts/index.html'
     form_class = PtoRequestForm
-    success_url = '/accounts'
+    success_url = 'accounts:index'
     # Pre-populates the form with the specified values on page load.
     def get_initial(self):
         return {'user': self.request.user}
@@ -47,8 +47,9 @@ def login_view(request):
         username = user_form.cleaned_data.get('username')
         password = user_form.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
-        login(request, user)
-        return redirect(reverse('accounts:index', args=(username, )))
+        if user is not None:
+            login(request, user)
+            return redirect("/accounts/?%s" % user.username)
     return render(request, 'form.html', {'user_form':user_form, 'title':title})
 
 
@@ -67,7 +68,7 @@ def register_view(request):
         # Log in user
         new_user = authenticate(username=user.username, password=password)
         login(request, new_user)
-        return redirect("/accounts/")
+        return redirect("accounts:index")
 
     context = {
         'user_form': user_form,
@@ -79,4 +80,4 @@ def register_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("/accounts/login/")
+    return redirect("accounts:login")

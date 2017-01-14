@@ -11,6 +11,5 @@ urlpatterns = [
     url(r'^login/$', login_view, name='login'),
     url(r'^logout/$', logout_view, name='logout'),
     url(r'^register/$', register_view, name='register'),
-    url(r'^(?P<username>[0-9a-zA-Z._]+)/$', login_required(views.IndexView.as_view()), name = 'index'),
-
+    url(r'^$', login_required(views.IndexView.as_view()), name='index'),
 ]

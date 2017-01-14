@@ -53,10 +53,10 @@ $(document).ready(function() {
     defaultView:'month',
     editable: true,
     eventDrop: function(event, delta, revertFunc, jsEvent, ui, view){
-      // Eventually implement a system where the user can edit events by dragging.
+      
     },
     events: ptoObjs,
-    
+
   });
   // Remove vertical scrollbar that Full Calendar adds inline. For some reason it comes back when switching between month, week and day views.
   $('.fc-scroller').css('overflow-y', '');
