@@ -49,7 +49,7 @@ def login_view(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect("/accounts/?%s" % user.username)
+            return redirect(reverse('accounts:index', args=(username, )))
     return render(request, 'form.html', {'user_form':user_form, 'title':title})
 
 

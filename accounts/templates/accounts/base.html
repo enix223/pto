@@ -36,7 +36,12 @@
             {% endif %}
             {% if user.is_authenticated %}
             <li><a href="#">My History</a></li>
-            <li><a href="{% url 'accounts:index' %}"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
+
+            <!-- You should pass a username to index url function as below -->
+            {% if user %}
+            <li><a href="{% url 'accounts:index' user.username %}"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
+            {% endif %}
+
             <li><a href="{% url 'accounts:logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             {% endif %}
           </ul>
